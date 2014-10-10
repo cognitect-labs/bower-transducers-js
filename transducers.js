@@ -1,4 +1,4 @@
-// transducers-js 0.4.84
+// transducers-js 0.4.87
 // http://github.com/cognitect/transducers-js
 // 
 // Copyright 2014 Cognitect. All Rights Reserved.
@@ -14,7 +14,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License..
-var COMPILED = !0, goog = goog || {};
+;(function(){var COMPILED = !0, goog = goog || {};
 goog.global = this;
 goog.isDef = function(a) {
   return void 0 !== a;
@@ -2133,4 +2133,4 @@ goog.exportSymbol("transducers.into", com.cognitect.transducers.into), goog.expo
 TRANSDUCERS_NODE_TARGET && (module.exports = {reduced:com.cognitect.transducers.reduced, isReduced:com.cognitect.transducers.isReduced, comp:com.cognitect.transducers.comp, complement:com.cognitect.transducers.complement, map:com.cognitect.transducers.map, filter:com.cognitect.transducers.filter, remove:com.cognitect.transducers.remove, keep:com.cognitect.transducers.keep, keepIndexed:com.cognitect.transducers.keepIndexed, cat:com.cognitect.transducers.cat, mapcat:com.cognitect.transducers.mapcat, 
 transduce:com.cognitect.transducers.transduce, reduce:com.cognitect.transducers.reduce, take:com.cognitect.transducers.take, takeWhile:com.cognitect.transducers.takeWhile, takeNth:com.cognitect.transducers.takeNth, drop:com.cognitect.transducers.drop, dropWhile:com.cognitect.transducers.dropWhile, partitionBy:com.cognitect.transducers.partitionBy, partitionAll:com.cognitect.transducers.partitionAll, into:com.cognitect.transducers.into, toFn:com.cognitect.transducers.toFn, wrap:com.cognitect.transducers.wrap, 
 completing:com.cognitect.transducers.completing, first:com.cognitect.transducers.first, ensureReduced:com.cognitect.transducers.ensureReduced, unreduced:com.cognitect.transducers.unreduced});
-
+})();
