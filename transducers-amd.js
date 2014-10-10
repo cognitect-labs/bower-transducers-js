@@ -1,4 +1,4 @@
-// transducers-js 0.4.87
+// transducers-js 0.4.89
 // http://github.com/cognitect/transducers-js
 // 
 // Copyright 2014 Cognitect. All Rights Reserved.
@@ -2043,6 +2043,7 @@ com.cognitect.transducers.objectReduce = function(a, b, c) {
   return a.result(b);
 };
 com.cognitect.transducers.iterableReduce = function(a, b, c) {
+  c["@@iterator"] && (c = c["@@iterator"]());
   for (var d = c.next();!d.done;) {
     b = a.step(b, d.value);
     if (com.cognitect.transducers.isReduced(b)) {
