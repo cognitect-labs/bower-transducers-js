@@ -1,5 +1,5 @@
-// transducers-js 0.4.93
-// http://github.com/cognitect/transducers-js
+// transducers-js 0.4.101
+// http://github.com/cognitect-labs/transducers-js
 // 
 // Copyright 2014 Cognitect. All Rights Reserved.
 //
@@ -2087,13 +2087,13 @@ com.cognitect.transducers.addEntry = function(a, b) {
   return a;
 };
 com.cognitect.transducers.into = function(a, b, c) {
-  if (com.cognitect.transducers.isString(c)) {
+  if (com.cognitect.transducers.isString(a)) {
     return com.cognitect.transducers.transduce(b, com.cognitect.transducers.stringAppend, a, c);
   }
-  if (com.cognitect.transducers.isArray(c)) {
+  if (com.cognitect.transducers.isArray(a)) {
     return com.cognitect.transducers.transduce(b, com.cognitect.transducers.arrayPush, a, c);
   }
-  if (com.cognitect.transducers.isObject(c)) {
+  if (com.cognitect.transducers.isObject(a)) {
     return com.cognitect.transducers.transduce(b, com.cognitect.transducers.addEntry, a, c);
   }
 };

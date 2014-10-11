@@ -1,5 +1,5 @@
-// transducers-js 0.4.93
-// http://github.com/cognitect/transducers-js
+// transducers-js 0.4.101
+// http://github.com/cognitect-labs/transducers-js
 // 
 // Copyright 2014 Cognitect. All Rights Reserved.
 //
@@ -28,5 +28,5 @@ u.prototype.step=function(a,b){return null==this.d(b)?a:this.a.step(a,b)};f.keep
 f.r=function(a){return{init:function(){return a.init()},result:function(a){return a},step:function(b,d){var e=a.step(b,d);return f.isReduced(e)?f.reduced(e):e}}};f.cat=function(a){var b=f.r(a);return{init:function(){return a.init()},result:function(b){return a.result(b)},step:function(a,e){return f.reduce(b,a,e)}}};f.mapcat=function(a){return f.comp(f.map(a),f.cat)};f.u=function(a,b,d){for(var e=0;e<d.length;e++)if(b=a.step(b,d.charAt(e)),f.isReduced(b)){b=b.value;break}return a.result(b)};
 f.l=function(a,b,d){for(var e=0;e<d.length;e++)if(b=a.step(b,d[e]),f.isReduced(b)){b=b.value;break}return a.result(b)};f.q=function(a,b,d){for(var e in d)if(d.hasOwnProperty(e)&&(b=a.step(b,[e,d[e]]),f.isReduced(b))){b=b.value;break}return a.result(b)};f.p=function(a,b,d){d["@@iterator"]&&(d=d["@@iterator"]());for(var e=d.next();!e.done;){b=a.step(b,e.value);if(f.isReduced(b)){b=b.value;break}e=d.next()}return a.result(b)};
 f.reduce=function(a,b,d){a="function"==typeof a?f.wrap(a):a;if(f.h(d))return f.u(a,b,d);if(f.isArray(d))return f.l(a,b,d);if(f.o(d))return f.p(a,b,d);if(f.g(d))return f.q(a,b,d);throw Error("Cannot reduce instance of "+d.constructor.name);};f.transduce=function(a,b,d,e){b="function"==typeof b?f.wrap(b):b;a=a(b);return f.reduce(a,d,e)};f.t=function(a,b){return a+b};f.k=function(a,b){a.push(b);return a};f.j=function(a,b){a[b[0]]=b[1];return a};
-f.into=function(a,b,d){if(f.h(d))return f.transduce(b,f.t,a,d);if(f.isArray(d))return f.transduce(b,f.k,a,d);if(f.g(d))return f.transduce(b,f.j,a,d)};function w(a,b){this.m=a;this.a=b}w.prototype.init=function(){return this.a.init()};w.prototype.result=function(a){return this.m(a)};w.prototype.step=function(a,b){return this.a.step(a,b)};f.completing=function(a,b){b=b||f.n;return new w(b,a)};f.toFn=function(a,b){"function"==typeof b&&(b=f.wrap(b));var d=a(b);return d.step.bind(d)};
+f.into=function(a,b,d){if(f.h(a))return f.transduce(b,f.t,a,d);if(f.isArray(a))return f.transduce(b,f.k,a,d);if(f.g(a))return f.transduce(b,f.j,a,d)};function w(a,b){this.m=a;this.a=b}w.prototype.init=function(){return this.a.init()};w.prototype.result=function(a){return this.m(a)};w.prototype.step=function(a,b){return this.a.step(a,b)};f.completing=function(a,b){b=b||f.n;return new w(b,a)};f.toFn=function(a,b){"function"==typeof b&&(b=f.wrap(b));var d=a(b);return d.step.bind(d)};
 f.first=function(){return new f.wrap(function(a,b){return f.reduced(b)})};define("transducers",[],function(){return f});})();

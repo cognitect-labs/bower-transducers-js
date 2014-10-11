@@ -1,5 +1,5 @@
-// transducers-js 0.4.93
-// http://github.com/cognitect/transducers-js
+// transducers-js 0.4.101
+// http://github.com/cognitect-labs/transducers-js
 // 
 // Copyright 2014 Cognitect. All Rights Reserved.
 //
@@ -29,5 +29,5 @@ function v(a,b,c){a="function"==typeof a?n(a):a;if("string"==typeof x){var d=a;f
 [d,c[d]]),r(b))){b=b.value;break}return a.result(b)}throw Error("Cannot reduce instance of "+c.constructor.name);}function N(a,b,c,d){b="function"==typeof b?n(b):b;a=a(b);return v(a,c,d)}function O(a,b){return a+b}function P(a,b){a.push(b);return a}function Q(a,b){a[b[0]]=b[1];return a}function R(a,b){this.i=a;this.a=b}R.prototype.init=function(){return this.a.init()};R.prototype.result=function(a){return this.i(a)};R.prototype.step=function(a,b){return this.a.step(a,b)};
 function S(){return new n(function(a,b){return q(b)})}h("transducers.reduced",q);h("transducers.isReduced",r);h("transducers.comp",u);h("transducers.complement",l);h("transducers.map",y);h("transducers.filter",A);h("transducers.remove",function(a){return A(l(a))});h("transducers.keep",function(a){return function(b){return new J(a,b)}});h("transducers.keepIndexed",function(a){return function(b){return new K(a,b)}});h("transducers.cat",M);h("transducers.mapcat",function(a){return u(y(a),M)});
 h("transducers.transduce",N);h("transducers.reduce",v);h("transducers.take",function(a){return function(b){return new B(a,b)}});h("transducers.takeWhile",function(a){return function(b){return new C(a,b)}});h("transducers.takeNth",function(a){return function(b){return new D(a,b)}});h("transducers.drop",function(a){return function(b){return new E(a,b)}});h("transducers.dropWhile",function(a){return function(b){return new F(a,b)}});
-h("transducers.partitionBy",function(a){return function(b){return new H(a,b)}});h("transducers.partitionAll",function(a){return function(b){return new I(a,b)}});h("transducers.into",function(a,b,c){if("string"==typeof x)return N(b,O,a,c);if(k(c))return N(b,P,a,c);if("object"==f(c))return N(b,Q,a,c)});h("transducers.toFn",function(a,b){"function"==typeof b&&(b=n(b));var c=a(b);return c.step.bind(c)});h("transducers.wrap",n);h("transducers.completing",function(a,b){b=b||t;return new R(b,a)});
+h("transducers.partitionBy",function(a){return function(b){return new H(a,b)}});h("transducers.partitionAll",function(a){return function(b){return new I(a,b)}});h("transducers.into",function(a,b,c){if("string"==typeof x)return N(b,O,a,c);if(k(a))return N(b,P,a,c);if("object"==f(a))return N(b,Q,a,c)});h("transducers.toFn",function(a,b){"function"==typeof b&&(b=n(b));var c=a(b);return c.step.bind(c)});h("transducers.wrap",n);h("transducers.completing",function(a,b){b=b||t;return new R(b,a)});
 h("transducers.first",S);h("transducers.ensureReduced",S);h("transducers.unreduced",S);})();
