@@ -1,4 +1,4 @@
-// transducers-js 0.4.101
+// transducers-js 0.4.113
 // http://github.com/cognitect-labs/transducers-js
 // 
 // Copyright 2014 Cognitect. All Rights Reserved.
@@ -625,12 +625,17 @@ goog.string.subs = function(a, b) {
 goog.string.collapseWhitespace = function(a) {
   return a.replace(/[\s\xa0]+/g, " ").replace(/^\s+|\s+$/g, "");
 };
-goog.string.isEmpty = function(a) {
+goog.string.isEmptyOrWhitespace = function(a) {
   return/^[\s\xa0]*$/.test(a);
 };
-goog.string.isEmptySafe = function(a) {
-  return goog.string.isEmpty(goog.string.makeSafe(a));
+goog.string.isEmptyString = function(a) {
+  return 0 == a.length;
 };
+goog.string.isEmpty = goog.string.isEmptyOrWhitespace;
+goog.string.isEmptyOrWhitespaceSafe = function(a) {
+  return goog.string.isEmptyOrWhitespace(goog.string.makeSafe(a));
+};
+goog.string.isEmptySafe = goog.string.isEmptyOrWhitespaceSafe;
 goog.string.isBreakingWhitespace = function(a) {
   return!/[^\t\n\r ]/.test(a);
 };
@@ -2111,8 +2116,9 @@ com.cognitect.transducers.Completing.prototype.step = function(a, b) {
   return this.xf.step(a, b);
 };
 com.cognitect.transducers.completing = function(a, b) {
+  a = "function" == typeof a ? com.cognitect.transducers.wrap(a) : a;
   b = b || com.cognitect.transducers.identity;
-  if (TRANSDUCERS_DEV && null != a && com.cognitect.transducers.isObject(a)) {
+  if (TRANSDUCERS_DEV && null != a && !com.cognitect.transducers.isObject(a)) {
     throw Error("completing must be given a transducer as first argument");
   }
   return new com.cognitect.transducers.Completing(b, a);
