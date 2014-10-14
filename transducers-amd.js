@@ -1,4 +1,4 @@
-// transducers-js 0.4.128
+// transducers-js 0.4.132
 // http://github.com/cognitect-labs/transducers-js
 // 
 // Copyright 2014 Cognitect. All Rights Reserved.
@@ -1694,7 +1694,7 @@ com.cognitect.transducers.Wrap.prototype.step = function(a, b) {
   return this.stepFn(a, b);
 };
 com.cognitect.transducers.wrap = function(a) {
-  return new com.cognitect.transducers.Wrap(a);
+  return "function" == typeof a ? new com.cognitect.transducers.Wrap(a) : a;
 };
 com.cognitect.transducers.Reduced = function(a) {
   this.__transducers_reduced__ = !0;
@@ -2134,11 +2134,9 @@ com.cognitect.transducers.toFn = function(a, b) {
   var c = a(b);
   return c.step.bind(c);
 };
-com.cognitect.transducers.first = function(a) {
-  return new com.cognitect.transducers.wrap(function(a, c) {
-    return com.cognitect.transducers.reduced(c);
-  });
-};
+com.cognitect.transducers.first = com.cognitect.transducers.wrap(function(a, b) {
+  return com.cognitect.transducers.reduced(b);
+});
 TRANSDUCERS_BROWSER_TARGET && (goog.exportSymbol("transducers.reduced", com.cognitect.transducers.reduced), goog.exportSymbol("transducers.isReduced", com.cognitect.transducers.isReduced), goog.exportSymbol("transducers.comp", com.cognitect.transducers.comp), goog.exportSymbol("transducers.complement", com.cognitect.transducers.complement), goog.exportSymbol("transducers.transduce", com.cognitect.transducers.transduce), goog.exportSymbol("transducers.reduce", com.cognitect.transducers.reduce), goog.exportSymbol("transducers.map", 
 com.cognitect.transducers.map), goog.exportSymbol("transducers.Map", com.cognitect.transducers.Map), goog.exportSymbol("transducers.filter", com.cognitect.transducers.filter), goog.exportSymbol("transducers.Filter", com.cognitect.transducers.Filter), goog.exportSymbol("transducers.remove", com.cognitect.transducers.remove), goog.exportSymbol("transducers.Remove", com.cognitect.transducers.Remove), goog.exportSymbol("transducers.keep", com.cognitect.transducers.keep), goog.exportSymbol("transducers.Keep", 
 com.cognitect.transducers.Keep), goog.exportSymbol("transducers.keepIndexed", com.cognitect.transducers.keepIndexed), goog.exportSymbol("transducers.KeepIndexed", com.cognitect.transducers.KeepIndexed), goog.exportSymbol("transducers.take", com.cognitect.transducers.take), goog.exportSymbol("transducers.Take", com.cognitect.transducers.Take), goog.exportSymbol("transducers.takeWhile", com.cognitect.transducers.takeWhile), goog.exportSymbol("transducers.TakeWhile", com.cognitect.transducers.TakeWhile), 
