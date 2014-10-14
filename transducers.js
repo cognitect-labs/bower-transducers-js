@@ -1,4 +1,4 @@
-// transducers-js 0.4.113
+// transducers-js 0.4.128
 // http://github.com/cognitect-labs/transducers-js
 // 
 // Copyright 2014 Cognitect. All Rights Reserved.
@@ -1697,19 +1697,23 @@ com.cognitect.transducers.wrap = function(a) {
   return new com.cognitect.transducers.Wrap(a);
 };
 com.cognitect.transducers.Reduced = function(a) {
+  this.__transducers_reduced__ = !0;
   this.value = a;
 };
 com.cognitect.transducers.reduced = function(a) {
   return new com.cognitect.transducers.Reduced(a);
 };
 com.cognitect.transducers.isReduced = function(a) {
-  return a instanceof com.cognitect.transducers.Reduced;
+  return a instanceof com.cognitect.transducers.Reduced || a && a.__transducers_reduced__;
 };
 com.cognitect.transducers.ensureReduced = function(a) {
   return com.cognitect.transducers.isReduced(a) ? a : com.cognitect.transducers.reduced(a);
 };
+com.cognitect.transducers.deref = function(a) {
+  return a.value;
+};
 com.cognitect.transducers.unreduced = function(a) {
-  return com.cognitect.transducers.isReduced(a) ? a.value : a;
+  return com.cognitect.transducers.isReduced(a) ? com.cognitect.transducers.deref(a) : a;
 };
 com.cognitect.transducers.identity = function(a) {
   return a;
@@ -2023,7 +2027,7 @@ com.cognitect.transducers.mapcat = function(a) {
 com.cognitect.transducers.stringReduce = function(a, b, c) {
   for (var d = 0;d < c.length;d++) {
     if (b = a.step(b, c.charAt(d)), com.cognitect.transducers.isReduced(b)) {
-      b = b.value;
+      b = com.cognitect.transducers.deref(b);
       break;
     }
   }
@@ -2032,7 +2036,7 @@ com.cognitect.transducers.stringReduce = function(a, b, c) {
 com.cognitect.transducers.arrayReduce = function(a, b, c) {
   for (var d = 0;d < c.length;d++) {
     if (b = a.step(b, c[d]), com.cognitect.transducers.isReduced(b)) {
-      b = b.value;
+      b = com.cognitect.transducers.deref(b);
       break;
     }
   }
@@ -2041,7 +2045,7 @@ com.cognitect.transducers.arrayReduce = function(a, b, c) {
 com.cognitect.transducers.objectReduce = function(a, b, c) {
   for (var d in c) {
     if (c.hasOwnProperty(d) && (b = a.step(b, [d, c[d]]), com.cognitect.transducers.isReduced(b))) {
-      b = b.value;
+      b = com.cognitect.transducers.deref(b);
       break;
     }
   }
@@ -2052,7 +2056,7 @@ com.cognitect.transducers.iterableReduce = function(a, b, c) {
   for (var d = c.next();!d.done;) {
     b = a.step(b, d.value);
     if (com.cognitect.transducers.isReduced(b)) {
-      b = b.value;
+      b = com.cognitect.transducers.deref(b);
       break;
     }
     d = c.next();
@@ -2060,20 +2064,22 @@ com.cognitect.transducers.iterableReduce = function(a, b, c) {
   return a.result(b);
 };
 com.cognitect.transducers.reduce = function(a, b, c) {
-  a = "function" == typeof a ? com.cognitect.transducers.wrap(a) : a;
-  if (com.cognitect.transducers.isString(c)) {
-    return com.cognitect.transducers.stringReduce(a, b, c);
+  if (c) {
+    a = "function" == typeof a ? com.cognitect.transducers.wrap(a) : a;
+    if (com.cognitect.transducers.isString(c)) {
+      return com.cognitect.transducers.stringReduce(a, b, c);
+    }
+    if (com.cognitect.transducers.isArray(c)) {
+      return com.cognitect.transducers.arrayReduce(a, b, c);
+    }
+    if (com.cognitect.transducers.isIterable(c)) {
+      return com.cognitect.transducers.iterableReduce(a, b, c);
+    }
+    if (com.cognitect.transducers.isObject(c)) {
+      return com.cognitect.transducers.objectReduce(a, b, c);
+    }
+    throw Error("Cannot reduce instance of " + c.constructor.name);
   }
-  if (com.cognitect.transducers.isArray(c)) {
-    return com.cognitect.transducers.arrayReduce(a, b, c);
-  }
-  if (com.cognitect.transducers.isIterable(c)) {
-    return com.cognitect.transducers.iterableReduce(a, b, c);
-  }
-  if (com.cognitect.transducers.isObject(c)) {
-    return com.cognitect.transducers.objectReduce(a, b, c);
-  }
-  throw Error("Cannot reduce instance of " + c.constructor.name);
 };
 com.cognitect.transducers.transduce = function(a, b, c, d) {
   b = "function" == typeof b ? com.cognitect.transducers.wrap(b) : b;
@@ -2133,11 +2139,15 @@ com.cognitect.transducers.first = function(a) {
     return com.cognitect.transducers.reduced(c);
   });
 };
-TRANSDUCERS_BROWSER_TARGET && (goog.exportSymbol("transducers.reduced", com.cognitect.transducers.reduced), goog.exportSymbol("transducers.isReduced", com.cognitect.transducers.isReduced), goog.exportSymbol("transducers.comp", com.cognitect.transducers.comp), goog.exportSymbol("transducers.complement", com.cognitect.transducers.complement), goog.exportSymbol("transducers.map", com.cognitect.transducers.map), goog.exportSymbol("transducers.filter", com.cognitect.transducers.filter), goog.exportSymbol("transducers.remove", 
-com.cognitect.transducers.remove), goog.exportSymbol("transducers.keep", com.cognitect.transducers.keep), goog.exportSymbol("transducers.keepIndexed", com.cognitect.transducers.keepIndexed), goog.exportSymbol("transducers.cat", com.cognitect.transducers.cat), goog.exportSymbol("transducers.mapcat", com.cognitect.transducers.mapcat), goog.exportSymbol("transducers.transduce", com.cognitect.transducers.transduce), goog.exportSymbol("transducers.reduce", com.cognitect.transducers.reduce), goog.exportSymbol("transducers.take", 
-com.cognitect.transducers.take), goog.exportSymbol("transducers.takeWhile", com.cognitect.transducers.takeWhile), goog.exportSymbol("transducers.takeNth", com.cognitect.transducers.takeNth), goog.exportSymbol("transducers.drop", com.cognitect.transducers.drop), goog.exportSymbol("transducers.dropWhile", com.cognitect.transducers.dropWhile), goog.exportSymbol("transducers.partitionBy", com.cognitect.transducers.partitionBy), goog.exportSymbol("transducers.partitionAll", com.cognitect.transducers.partitionAll), 
-goog.exportSymbol("transducers.into", com.cognitect.transducers.into), goog.exportSymbol("transducers.toFn", com.cognitect.transducers.toFn), goog.exportSymbol("transducers.wrap", com.cognitect.transducers.wrap), goog.exportSymbol("transducers.completing", com.cognitect.transducers.completing), goog.exportSymbol("transducers.first", com.cognitect.transducers.first), goog.exportSymbol("transducers.ensureReduced", com.cognitect.transducers.first), goog.exportSymbol("transducers.unreduced", com.cognitect.transducers.first));
-TRANSDUCERS_NODE_TARGET && (module.exports = {reduced:com.cognitect.transducers.reduced, isReduced:com.cognitect.transducers.isReduced, comp:com.cognitect.transducers.comp, complement:com.cognitect.transducers.complement, map:com.cognitect.transducers.map, filter:com.cognitect.transducers.filter, remove:com.cognitect.transducers.remove, keep:com.cognitect.transducers.keep, keepIndexed:com.cognitect.transducers.keepIndexed, cat:com.cognitect.transducers.cat, mapcat:com.cognitect.transducers.mapcat, 
-transduce:com.cognitect.transducers.transduce, reduce:com.cognitect.transducers.reduce, take:com.cognitect.transducers.take, takeWhile:com.cognitect.transducers.takeWhile, takeNth:com.cognitect.transducers.takeNth, drop:com.cognitect.transducers.drop, dropWhile:com.cognitect.transducers.dropWhile, partitionBy:com.cognitect.transducers.partitionBy, partitionAll:com.cognitect.transducers.partitionAll, into:com.cognitect.transducers.into, toFn:com.cognitect.transducers.toFn, wrap:com.cognitect.transducers.wrap, 
-completing:com.cognitect.transducers.completing, first:com.cognitect.transducers.first, ensureReduced:com.cognitect.transducers.ensureReduced, unreduced:com.cognitect.transducers.unreduced});
+TRANSDUCERS_BROWSER_TARGET && (goog.exportSymbol("transducers.reduced", com.cognitect.transducers.reduced), goog.exportSymbol("transducers.isReduced", com.cognitect.transducers.isReduced), goog.exportSymbol("transducers.comp", com.cognitect.transducers.comp), goog.exportSymbol("transducers.complement", com.cognitect.transducers.complement), goog.exportSymbol("transducers.transduce", com.cognitect.transducers.transduce), goog.exportSymbol("transducers.reduce", com.cognitect.transducers.reduce), goog.exportSymbol("transducers.map", 
+com.cognitect.transducers.map), goog.exportSymbol("transducers.Map", com.cognitect.transducers.Map), goog.exportSymbol("transducers.filter", com.cognitect.transducers.filter), goog.exportSymbol("transducers.Filter", com.cognitect.transducers.Filter), goog.exportSymbol("transducers.remove", com.cognitect.transducers.remove), goog.exportSymbol("transducers.Remove", com.cognitect.transducers.Remove), goog.exportSymbol("transducers.keep", com.cognitect.transducers.keep), goog.exportSymbol("transducers.Keep", 
+com.cognitect.transducers.Keep), goog.exportSymbol("transducers.keepIndexed", com.cognitect.transducers.keepIndexed), goog.exportSymbol("transducers.KeepIndexed", com.cognitect.transducers.KeepIndexed), goog.exportSymbol("transducers.take", com.cognitect.transducers.take), goog.exportSymbol("transducers.Take", com.cognitect.transducers.Take), goog.exportSymbol("transducers.takeWhile", com.cognitect.transducers.takeWhile), goog.exportSymbol("transducers.TakeWhile", com.cognitect.transducers.TakeWhile), 
+goog.exportSymbol("transducers.takeNth", com.cognitect.transducers.takeNth), goog.exportSymbol("transducers.TakeNth", com.cognitect.transducers.TakeNth), goog.exportSymbol("transducers.drop", com.cognitect.transducers.drop), goog.exportSymbol("transducers.Drop", com.cognitect.transducers.Drop), goog.exportSymbol("transducers.dropWhile", com.cognitect.transducers.dropWhile), goog.exportSymbol("transducers.DropWhile", com.cognitect.transducers.DropWhile), goog.exportSymbol("transducers.partitionBy", 
+com.cognitect.transducers.partitionBy), goog.exportSymbol("transducers.PartitionBy", com.cognitect.transducers.PartitionBy), goog.exportSymbol("transducers.partitionAll", com.cognitect.transducers.partitionAll), goog.exportSymbol("transducers.PartitionAll", com.cognitect.transducers.PartitionAll), goog.exportSymbol("transducers.completing", com.cognitect.transducers.completing), goog.exportSymbol("transducers.Completing", com.cognitect.transducers.Completing), goog.exportSymbol("transducers.wrap", 
+com.cognitect.transducers.wrap), goog.exportSymbol("transducers.Wrap", com.cognitect.transducers.Wrap), goog.exportSymbol("transducers.cat", com.cognitect.transducers.cat), goog.exportSymbol("transducers.mapcat", com.cognitect.transducers.mapcat), goog.exportSymbol("transducers.into", com.cognitect.transducers.into), goog.exportSymbol("transducers.toFn", com.cognitect.transducers.toFn), goog.exportSymbol("transducers.first", com.cognitect.transducers.first), goog.exportSymbol("transducers.ensureReduced", 
+com.cognitect.transducers.first), goog.exportSymbol("transducers.unreduced", com.cognitect.transducers.first), goog.exportSymbol("transducers.deref", com.cognitect.transducers.deref));
+TRANSDUCERS_NODE_TARGET && (module.exports = {reduced:com.cognitect.transducers.reduced, isReduced:com.cognitect.transducers.isReduced, comp:com.cognitect.transducers.comp, complement:com.cognitect.transducers.complement, map:com.cognitect.transducers.map, Map:com.cognitect.transducers.Map, filter:com.cognitect.transducers.filter, Filter:com.cognitect.transducers.Filter, remove:com.cognitect.transducers.remove, Remove:com.cognitect.transducers.Remove, keep:com.cognitect.transducers.keep, Kemove:com.cognitect.transducers.Keep, 
+keepIndexed:com.cognitect.transducers.keepIndexed, KeepIndexed:com.cognitect.transducers.KeepIndexed, take:com.cognitect.transducers.take, Take:com.cognitect.transducers.Take, takeWhile:com.cognitect.transducers.takeWhile, TakeWhile:com.cognitect.transducers.TakeWhile, takeNth:com.cognitect.transducers.takeNth, TakeNth:com.cognitect.transducers.TakeNth, drop:com.cognitect.transducers.drop, Drop:com.cognitect.transducers.Drop, dropWhile:com.cognitect.transducers.dropWhile, DropWhile:com.cognitect.transducers.DropWhile, 
+partitionBy:com.cognitect.transducers.partitionBy, PartitionBy:com.cognitect.transducers.PartitionBy, partitionAll:com.cognitect.transducers.partitionAll, PartitionAll:com.cognitect.transducers.PartitionAll, completing:com.cognitect.transducers.completing, Completing:com.cognitect.transducers.Completing, wrap:com.cognitect.transducers.wrap, Wrap:com.cognitect.transducers.Wrap, cat:com.cognitect.transducers.cat, mapcat:com.cognitect.transducers.mapcat, transduce:com.cognitect.transducers.transduce, 
+reduce:com.cognitect.transducers.reduce, into:com.cognitect.transducers.into, toFn:com.cognitect.transducers.toFn, first:com.cognitect.transducers.first, ensureReduced:com.cognitect.transducers.ensureReduced, unreduced:com.cognitect.transducers.unreduced, deref:com.cognitect.transducers.deref});
 })();
