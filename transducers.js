@@ -1,4 +1,4 @@
-// transducers-js 0.4.132
+// transducers-js 0.4.135
 // http://github.com/cognitect-labs/transducers-js
 // 
 // Copyright 2014 Cognitect. All Rights Reserved.
@@ -1906,7 +1906,7 @@ com.cognitect.transducers.PartitionBy.prototype.init = function() {
   return this.xf.init();
 };
 com.cognitect.transducers.PartitionBy.prototype.result = function(a) {
-  0 != this.a.length && (a = this.xf.step(a, this.a), this.a = []);
+  0 < this.a.length && (a = com.cognitect.transducers.unreduced(this.xf.step(a, this.a)), this.a = []);
   return this.xf.result(a);
 };
 com.cognitect.transducers.PartitionBy.prototype.step = function(a, b) {
@@ -1915,7 +1915,7 @@ com.cognitect.transducers.PartitionBy.prototype.step = function(a, b) {
   if (c == com.cognitect.transducers.NONE || c == val) {
     return this.a.push(b), a;
   }
-  c = com.cognitect.transducers.unreduced(this.xf.step(a, this.a));
+  c = this.xf.step(a, this.a);
   this.a = [];
   com.cognitect.transducers.isReduced(c) || this.a.push(b);
   return c;
@@ -1937,7 +1937,7 @@ com.cognitect.transducers.PartitionAll.prototype.init = function() {
   return this.xf.init();
 };
 com.cognitect.transducers.PartitionAll.prototype.result = function(a) {
-  0 < this.a.length && (a = this.xf.step(a, this.a), this.a = []);
+  0 < this.a.length && (a = com.cognitect.transducers.unreduced(this.xf.step(a, this.a)), this.a = []);
   return this.xf.result(a);
 };
 com.cognitect.transducers.PartitionAll.prototype.step = function(a, b) {
@@ -1945,7 +1945,7 @@ com.cognitect.transducers.PartitionAll.prototype.step = function(a, b) {
   if (this.n == this.a.length) {
     var c = this.a;
     this.a = [];
-    return com.cognitect.transducers.unreduced(this.xf.step(a, c));
+    return this.xf.step(a, c);
   }
   return a;
 };
