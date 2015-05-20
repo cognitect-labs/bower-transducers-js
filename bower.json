@@ -1,6 +1,6 @@
 {
   "name": "transducers-js",
-  "version": "0.4.169",
+  "version": "0.4.172",
   "description": "A Transducers implementation for JavaScript",
   "keywords": [
      "underscore",
