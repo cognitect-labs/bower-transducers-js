@@ -1,4 +1,4 @@
-// transducers-js 0.4.172
+// transducers-js 0.4.174
 // http://github.com/cognitect-labs/transducers-js
 // 
 // Copyright 2014-2015 Cognitect. All Rights Reserved.
@@ -622,7 +622,7 @@ goog.UNSEALABLE_CONSTRUCTOR_PROPERTY_ = "goog_defineClass_legacy_unsealable";
 var com = {cognitect:{}};
 com.cognitect.transducers = {};
 var TRANSDUCERS_DEV = !0, TRANSDUCERS_NODE_TARGET = !1, TRANSDUCERS_BROWSER_TARGET = !1, TRANSDUCERS_BROWSER_AMD_TARGET = !0;
-com.cognitect.transducers.ITER_SYMBOL = "undefined" != typeof Symbol ? Symbol.iterator : com.cognitect.transducers.ITER_SYMBOL;
+com.cognitect.transducers.ITER_SYMBOL = "undefined" != typeof Symbol ? Symbol.iterator : "@@iterator";
 com.cognitect.transducers.ITransformer = function() {
 };
 com.cognitect.transducers.ITransformer.prototype["@@transducer/init"] = function() {
